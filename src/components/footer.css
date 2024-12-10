@@ -3,8 +3,8 @@
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
-    background-color: #121212; /* Dark background */
-    color: #fff; /* White text */
+    background-color: #121212; 
+    color: #fff; 
     padding: 20px;
     text-align: center;
     gap: 20px;
@@ -16,7 +16,7 @@
   }
   
   .footer-section h4 {
-    color: #00aaff; /* Accent color for headings */
+    color: #00aaff; 
     margin-bottom: 10px;
   }
   
@@ -45,6 +45,6 @@
   }
   
   .social-media-icons a:hover {
-    color: #007bff; /* Change the color on hover */
+    color: #007bff; 
   }
   

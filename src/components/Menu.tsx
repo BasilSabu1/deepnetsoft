@@ -21,11 +21,10 @@ useEffect(() => {
 const navigate = useNavigate();
 
 const handleButtonClick = (menuName: string) => {
-  // Navigate to a specific page depending on the menu name
   if (menuName === 'Menu') {
     navigate('/menu');
   } else {
-    navigate(`/menu`); // Navigate dynamically based on the menu name
+    navigate(`/menu`); 
   }
 };
 
@@ -58,26 +57,24 @@ background:`url(${ButtonBackground})`,backgroundRepeat:"no-repeat",backgroundSiz
             
          }}>
     <div className="mt-3 d-flex justify-content-center">
-  {/* Check if there's any data */}
   {menus.length > 0 ? (
     menus.map((item) => (
       <button
-        key={item._id} // Assuming each item has a unique ID
+        key={item._id}
         className="btn btn-primary me-3 btn-lg"
         style={{ width: '100px', height: '50px' }}
-        onClick={() => handleButtonClick(item.name)} // Handle navigation
+        onClick={() => handleButtonClick(item.name)} 
       >
         {item.name}
       </button>
     ))
   ) : (
-    // If no data, show the default "Menu" button
     <button
       className="btn btn-primary me-3 btn-lg"
       style={{ width: '100px', height: '50px' }}
       onClick={() => handleButtonClick('Menu')}
     >
-      Menu <span>&rarr;</span> {/* Right arrow */}
+      Menu <span>&rarr;</span> 
     </button>
   )}
 </div>
@@ -118,7 +115,6 @@ background:`url(${ButtonBackground})`,backgroundRepeat:"no-repeat",backgroundSiz
           <h3 className="text-center mb-4" style={{color:"white"}}>- BRUNCH COCKTAILS -</h3>
         </div>
 
-        {/* Three data points in the bordered rectangle */}
         <div className="col-12 col-md-6 mb-3" style={{color:"white"}}>
           <h4>CINNAMON TOAST CRUNCH..........................$16</h4>
           <p>
@@ -139,7 +135,6 @@ background:`url(${ButtonBackground})`,backgroundRepeat:"no-repeat",backgroundSiz
 
         </div>
 
-        {/* Single item at the top */}
         <div className="col-12 mb-3" style={{color:"white"}}>
           <h4>MOET SPRITZ..........................$20</h4>
           <p>
