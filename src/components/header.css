@@ -1,0 +1,36 @@
+/* Custom styling for the header */
+.header {
+    background-color: #121618;
+    color: white;
+    padding: 1rem;
+  }
+  
+  .header__logo {
+    height: 40px;
+    position: relative;
+    top: 30px;
+  }
+  
+  .header__title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 20px;
+    position: relative;
+    bottom: 30px;
+    left: 50%;
+    
+  }
+
+ 
+  .title__deep {
+    color: blue;
+  }
+  
+  .title__net {
+    color: white;
+  }
+  
+  .title__soft {
+    color: gray;
+  }
+  
