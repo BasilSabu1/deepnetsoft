@@ -30,7 +30,7 @@ const handleButtonClick = (menuName: string) => {
 
   const fetchMenuItems = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/menu');
+      const response = await axios.get('https://deepsoftserver.onrender.com/menu');
       setMenus(response.data); 
     } catch (error) {
       console.error('Error:', error);

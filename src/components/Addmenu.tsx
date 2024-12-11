@@ -25,7 +25,7 @@ const MenuForm: React.FC = () => {
 const fetchSubmenuItems = async (menuId: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:3000/menu/${menuId}/items`
+      `https://deepsoftserver.onrender.com/menu/${menuId}/items`
     );
     setSubmenuItems(response.data);   } catch (error) {
     console.error('Error fetching submenu items:', error);
@@ -40,7 +40,7 @@ console.log('submenuitems',submenuItems);
 
   const fetchMenuItems = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/menu');
+      const response = await axios.get('https://deepsoftserver.onrender.com/menu');
       setMenus(response.data); 
     } catch (error) {
       console.error('Error:', error);
@@ -53,7 +53,7 @@ console.log('submenuitems',submenuItems);
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3000/menu', {
+      const response = await axios.post('https://deepsoftserver.onrender.com/menu', {
         name: menuName,
         description,
       });
@@ -76,7 +76,7 @@ console.log('submenuitems',submenuItems);
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/menu/${selectedMenuId}/item`,
+        `https://deepsoftserver.onrender.com/menu/${selectedMenuId}/item`,
         {
           name: submenuName,
           description: submenuDescription,
