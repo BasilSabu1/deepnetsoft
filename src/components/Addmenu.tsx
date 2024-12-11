@@ -102,7 +102,7 @@ console.log('submenuitems',submenuItems);
 
   const handleMenuDelete = async (menuId: string) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/menu/${menuId}`);
+      const response = await axios.delete(`https://deepsoftserver.onrender.com/menu/${menuId}`);
       if (response.status === 200) {
         toast.success('Menu item deleted successfully!');
         fetchMenuItems(); 
@@ -116,7 +116,7 @@ console.log('submenuitems',submenuItems);
   const handleSubmenuDelete = async (menuId: string, submenuId: string) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/menu/${menuId}/item/${submenuId}`
+        `https://deepsoftserver.onrender.com/menu/${menuId}/item/${submenuId}`
       );
       if (response.status === 200) {
         toast.success('Submenu deleted successfully!');
