@@ -8,29 +8,33 @@ const MenuForm: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [menus, setMenus] = useState<
-  Array<{ _id: string; name: string; description: string }>
+  Array<{ id: string; name: string; description: string }>
 >([]);
 
   const [submenuModal, setSubmenuModal] = useState<boolean>(false); 
-  const [selectedMenuId, setSelectedMenuId] = useState(''); 
+  const [selectedMenuId, setSelectedMenuId] = useState<string>(''); // Always a string
+
   const [submenuName, setSubmenuName] = useState<string>(''); 
   const [submenuDescription, setSubmenuDescription] = useState<string>(''); 
   const [submenuPrice, setSubmenuPrice] = useState<number>(0); 
   const [subviewmenuModal, setsubviewmenuModal] = useState<boolean>(false); 
 
   const [submenuItems, setSubmenuItems] = useState<
-  Array<{ _id: string; name: string; description: string; price: number }>
+  Array<{ id: string; name: string; description: string; price: number }>
 >([]);
 
-const fetchSubmenuItems = async (menuId: string) => {
+const fetchSubmenuItems = async (Id: string) => {
   try {
-    const response = await axios.get(
-      `https://deepsoftserver.onrender.com/menu/${menuId}/items`
-    );
-    setSubmenuItems(response.data);   } catch (error) {
+    const response = await axios.get(`http://localhost:4000/menu/${Id}`);
+    console.log('response',response);
+    
+    setSubmenuItems(response.data.submenus); // Update state with submenu items
+  } catch (error) {
     console.error('Error fetching submenu items:', error);
   }
 };
+
+console.log(submenuItems);
 
 console.log('submenuitems',submenuItems);
 
@@ -40,20 +44,20 @@ console.log('submenuitems',submenuItems);
 
   const fetchMenuItems = async () => {
     try {
-      const response = await axios.get('https://deepsoftserver.onrender.com/menu');
+      const response = await axios.get('http://localhost:4000/menu');
       setMenus(response.data); 
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  // console.log('menu',menus._id);
+  console.log('menu',menus);
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('https://deepsoftserver.onrender.com/menu', {
+      const response = await axios.post('http://localhost:4000/menu', {
         name: menuName,
         description,
       });
@@ -73,36 +77,47 @@ console.log('submenuitems',submenuItems);
 
   const handleSubmenuSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
+    // Construct the payload with submenu details
+    const submenuData = {
+      itemName: submenuName,
+      description: submenuDescription,
+      price: submenuPrice,
+      menuId: selectedMenuId, // Use the menu ID associated with the submenu
+    };
+    console.log(submenuData);
+    
+  
     try {
-      const response = await axios.post(
-        `https://deepsoftserver.onrender.com/menu/${selectedMenuId}/item`,
-        {
-          name: submenuName,
-          description: submenuDescription,
-          price: submenuPrice,
-        }
-      );
-
+      // Make a POST request to the submenu API
+      const response = await axios.post('http://localhost:4000/submenu', submenuData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
       if (response.status === 201) {
         toast.success('Submenu added successfully!');
         setSubmenuName('');
         setSubmenuDescription('');
         setSubmenuPrice(0);
-        setSubmenuModal(false); 
+        setSubmenuModal(false);  // Close the modal after submission
+        fetchSubmenuItems(selectedMenuId);  // Fetch submenu items for the selected menu
       }
     } catch (error) {
       toast.error('Error adding submenu. Please try again.');
       console.error('Error:', error);
     }
-
-    console.log('selected id',selectedMenuId);
-    
+  
+    console.log('selected id', selectedMenuId);
   };
+  
 
-  const handleMenuDelete = async (menuId: string) => {
+  const handleMenuDelete = async () => {
+    console.log(selectedMenuId);
+    
     try {
-      const response = await axios.delete(`https://deepsoftserver.onrender.com/menu/${menuId}`);
+      const response = await axios.delete(`http://localhost:4000/menu/${selectedMenuId}`);
       if (response.status === 200) {
         toast.success('Menu item deleted successfully!');
         fetchMenuItems(); 
@@ -116,7 +131,7 @@ console.log('submenuitems',submenuItems);
   const handleSubmenuDelete = async (menuId: string, submenuId: string) => {
     try {
       const response = await axios.delete(
-        `https://deepsoftserver.onrender.com/menu/${menuId}/item/${submenuId}`
+        `http://localhost:4000/menu/${menuId}/item/${submenuId}`
       );
       if (response.status === 200) {
         toast.success('Submenu deleted successfully!');
@@ -127,10 +142,12 @@ console.log('submenuitems',submenuItems);
       console.error('Error:', error);
     }
   };
+  console.log(selectedMenuId);
+  
 
-  const handleViewSubmenu = (menuId: string) => {
-    setSelectedMenuId(menuId); 
-    fetchSubmenuItems(menuId); 
+  const handleViewSubmenu = (id: string) => {
+    setSelectedMenuId(id); 
+    fetchSubmenuItems(id); 
     setsubviewmenuModal(true); 
   };
 
@@ -138,7 +155,7 @@ console.log('submenuitems',submenuItems);
     <>
       <ToastContainer position="top-center" autoClose={3000} />
 
-      <div style={{ position: 'relative', left: '80%', top: '30px' }}>
+      <div style={{ display:"flex",alignItems:"center",justifyContent:"center" ,marginTop:"20px"}}>
         <button className="btn btn-primary" onClick={() => setShowModal(true)}>
           Add Menu Item
         </button>
@@ -146,7 +163,7 @@ console.log('submenuitems',submenuItems);
 
       {showModal && (
         <>
-          <div className="modal show d-block" tabIndex={-1} role="dialog">
+          <div className="modal show d-block" tabIndex={-1} role="dialog" >
             <div className="modal-dialog modal-md" role="document">
               <div className="modal-content">
                 <div className="modal-header">
@@ -208,12 +225,10 @@ console.log('submenuitems',submenuItems);
             <div className="modal-dialog modal-md" role="document">
               <div className="modal-content">
                 <div className="modal-header">
-                  <h5 className="modal-title">Add Submenu Item</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={() => setSubmenuModal(false)}
-                  ></button>
+                  <h5 className="modal-title">Add Submenu Item </h5>
+                 
+
+
                 </div>
                 <div className="modal-body">
                   <form onSubmit={handleSubmenuSubmit}>
@@ -256,9 +271,19 @@ console.log('submenuitems',submenuItems);
                       />
                     </div>
                     <div className="d-flex justify-content-end">
-                      <button type="submit" className="btn btn-primary w-100">
-                        Add Submenu Item
-                      </button>
+                    <button
+    className="btn btn-primary ms-3"
+    onClick={() => {
+      if (selectedMenuId) {
+        setSubmenuModal(true); 
+      } else {
+        console.log('Please select a menu first.');
+      }
+    }}
+  >
+    Add Submenu
+  </button>
+
                     </div>
                   </form>
                 </div>
@@ -293,7 +318,7 @@ console.log('submenuitems',submenuItems);
                 <p>No submenu items available.</p>
               ) : (
                 submenuItems.map((item) => (
-                  <div key={item._id} className="col-md-4 mb-4">
+                  <div key={item.id} className="col-md-4 mb-4">
                     <div className="card">
                       <div className="card-body">
                         <h5 className="card-title">{item.name}</h5>
@@ -315,32 +340,42 @@ console.log('submenuitems',submenuItems);
 )}
 
 
-        <div className="container mt-5">
+        <div className="container mt-5" style={{overflowX:"hidden"}}>
         <h3>Menu List</h3>
         <div className="row">
           {menus.length === 0 ? (
             <p>No menu items available.</p>
           ) : (
             menus.map((menu) => (
-              <div key={menu._id} className="col-md-3 mb-4">
+              <div key={menu.id} className="col-md-3 mb-4">
                 <div className="card">
                   <div className="card-body">
                     <h5 className="card-title">{menu.name}</h5>
                     <p className="card-text">{menu.description}</p>
                     <div className="" style={{position:"relative",top:"-80px",left:"250px"}}>
-                    <button
+                    {/* <button
                         className="btn btn-danger btn-sm"
-                        onClick={() => handleMenuDelete(menu._id)}
+                        onClick={() => handleMenuDelete(menu.id)}
                       >
                         <i className="fas fa-trash"></i> 
-                      </button>
+                      </button> */}
+                      {/* <button
+      key={menu.id}
+      className="btn btn-sm btn-primary"
+      onClick={() => {
+        setSelectedMenuId(menu.id); 
+      }}
+    >
+      <i className="fas fa-trash"></i>
+    </button> */}
+
                     </div>
                    
                     <div className="d-flex justify-content-between">
                       <button
                         className="btn btn-sm btn-primary"
                         onClick={() => {
-                          setSelectedMenuId(menu._id);
+                          setSelectedMenuId(menu.id);
                           setSubmenuModal(true); 
                         }}
                       >
@@ -348,7 +383,7 @@ console.log('submenuitems',submenuItems);
                       </button>
                       <button
                         className="btn btn-warning btn-sm"
-                        onClick={() => handleViewSubmenu(menu._id)}
+                        onClick={() => handleViewSubmenu(menu.id)}
                       >
                         View Submenu
                       </button>

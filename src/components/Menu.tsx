@@ -7,6 +7,7 @@ import Cocktail1 from '../images/cocktails1.png'
 import Cocktail2 from '../images/cocktail2.png'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import './menu.css'
 
 
 const MenuPage: React.FC = () => {
@@ -30,7 +31,7 @@ const handleButtonClick = (menuName: string) => {
 
   const fetchMenuItems = async () => {
     try {
-      const response = await axios.get('https://deepsoftserver.onrender.com/menu');
+      const response = await axios.get('http://localhost:4000/menu');
       setMenus(response.data); 
     } catch (error) {
       console.error('Error:', error);
@@ -56,7 +57,8 @@ const handleButtonClick = (menuName: string) => {
 background:`url(${ButtonBackground})`,backgroundRepeat:"no-repeat",backgroundSize:"cover"
             
          }}>
-    <div className="mt-3 d-flex justify-content-center">
+    <div className="mt-3 d-flex justify-content-center" >
+      <h3 style={{position:"relative",right:"20px"}}>Menu : </h3>
   {menus.length > 0 ? (
     menus.map((item) => (
       <button
@@ -106,16 +108,16 @@ background:`url(${ButtonBackground})`,backgroundRepeat:"no-repeat",backgroundSiz
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
       }}
     >
-      <div className="row column2">
+      <div className="row column2" >
         <div className="col-12 mb-3">
-          <div className="">
-          <img src={Cocktail1} alt="" height={"130px"}/>
+          <div className="" >
+          <img src={Cocktail1} alt="" className="img1" height={"230px"}/>
 
           </div>
           <h3 className="text-center mb-4" style={{color:"white"}}>- BRUNCH COCKTAILS -</h3>
         </div>
 
-        <div className="col-12 col-md-6 mb-3" style={{color:"white"}}>
+        <div className="col-12 col-md-6 mb-3 content1" style={{color:"white"}}>
           <h4>CINNAMON TOAST CRUNCH..........................$16</h4>
           <p>
             Skrewball peanut butter whiskey, vanilla extract, Amaretto, Baileys,
@@ -123,7 +125,7 @@ background:`url(${ButtonBackground})`,backgroundRepeat:"no-repeat",backgroundSiz
           </p>
         </div>
 
-        <div className="col-12 col-md-6 mb-3" style={{color:"white"}}>
+        <div className="col-12 col-md-6 mb-3 content2" style={{color:"white"}}>
           <h4>BAR 42 MARY................................$14</h4>
           <p>
             Titos, tomato juice, worcestershire, celery salt, black pepper,
@@ -135,7 +137,7 @@ background:`url(${ButtonBackground})`,backgroundRepeat:"no-repeat",backgroundSiz
 
         </div>
 
-        <div className="col-12 mb-3" style={{color:"white"}}>
+        <div className="col-12 mb-3 content3" style={{color:"white"}}>
           <h4>MOET SPRITZ..........................$20</h4>
           <p>
             Aperol, St Germain, botanical liquor, fresh lime juice, <br /> mini brut
@@ -144,7 +146,7 @@ background:`url(${ButtonBackground})`,backgroundRepeat:"no-repeat",backgroundSiz
 
         </div>
         <div className="" style={{position:"relative",left:"80%",bottom:"70px"}}>
-          <img src={Cocktail2} alt="" height={"100px"} width={"100px"}/>
+          <img src={Cocktail2} className="img2" alt="" height={"100px"} width={"100px"}/>
 
           </div>
       </div>
