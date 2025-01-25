@@ -25,7 +25,7 @@ const MenuForm: React.FC = () => {
 
 const fetchSubmenuItems = async (Id: string) => {
   try {
-    const response = await axios.get(`http://localhost:4000/menu/${Id}`);
+    const response = await axios.get(`https://restaurantmenuappserver-production.up.railway.app/menu/${Id}`);
     console.log('response',response);
     
     setSubmenuItems(response.data.submenus); // Update state with submenu items
@@ -44,7 +44,7 @@ console.log('submenuitems',submenuItems);
 
   const fetchMenuItems = async () => {
     try {
-      const response = await axios.get('http://localhost:4000/menu');
+      const response = await axios.get('https://restaurantmenuappserver-production.up.railway.app/menu');
       setMenus(response.data); 
     } catch (error) {
       console.error('Error:', error);
@@ -57,7 +57,7 @@ console.log('submenuitems',submenuItems);
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:4000/menu', {
+      const response = await axios.post('https://restaurantmenuappserver-production.up.railway.app/menu', {
         name: menuName,
         description,
       });
@@ -90,7 +90,7 @@ console.log('submenuitems',submenuItems);
   
     try {
       // Make a POST request to the submenu API
-      const response = await axios.post('http://localhost:4000/submenu', submenuData, {
+      const response = await axios.post('https://restaurantmenuappserver-production.up.railway.app/submenu', submenuData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -117,7 +117,7 @@ console.log('submenuitems',submenuItems);
     console.log(selectedMenuId);
     
     try {
-      const response = await axios.delete(`http://localhost:4000/menu/${selectedMenuId}`);
+      const response = await axios.delete(`https://restaurantmenuappserver-production.up.railway.app/menu/${selectedMenuId}`);
       if (response.status === 200) {
         toast.success('Menu item deleted successfully!');
         fetchMenuItems(); 
@@ -131,7 +131,7 @@ console.log('submenuitems',submenuItems);
   const handleSubmenuDelete = async (menuId: string, submenuId: string) => {
     try {
       const response = await axios.delete(
-        `http://localhost:4000/menu/${menuId}/item/${submenuId}`
+        `https://restaurantmenuappserver-production.up.railway.app/menu/${menuId}/item/${submenuId}`
       );
       if (response.status === 200) {
         toast.success('Submenu deleted successfully!');
